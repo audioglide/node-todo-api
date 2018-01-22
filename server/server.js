@@ -1,3 +1,4 @@
+require('dotenv').config({ path: 'variables.env' });
 const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -5,6 +6,8 @@ const { ObjectID } = require('mongodb');
 const { mongoose } = require('./db/mongoose.js');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
+
+const port = process.env.PORT || 5001;
 
 var app = express();
 
@@ -92,8 +95,8 @@ app.patch('/todos/:id', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log('Started on port 3000');
+app.listen(port, () => {
+    console.log(`Started on port ${port}`);
 });
 
 module.exports = { app }
