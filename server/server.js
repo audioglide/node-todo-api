@@ -19,7 +19,7 @@ const { ObjectID } = require('mongodb');
 const { mongoose } = require('./db/mongoose.js');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
-
+const {authenticate} = require('./middleware/authenticate');
 const port = process.env.PORT;
 
 var app = express();
@@ -120,6 +120,24 @@ app.post('/users', (req, res)=>{
         res.status(400).send(e);
     })
 });
+
+app.get('/users/me', authenticate, (req, res)=>{
+    res.send(req.user);
+});
+
+
+// app.get('/users/me', (req, res)=>{
+//     var token = req.header('x-auth');
+
+//     User.findByToken(token).then((user)=>{
+//         if(!user){
+//             return Promise.reject();
+//         }
+//         res.send(user);
+//     }).catch((e)=>{
+//         res.status(401).send();
+//     });
+// });
 
 app.listen(port, () => {
     console.log(`Started on port ${port}`);
